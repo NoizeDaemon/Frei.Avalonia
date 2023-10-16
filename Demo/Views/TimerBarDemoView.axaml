@@ -1,0 +1,20 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+			 xmlns:controls="using:Frei.Avalonia.Controls"
+			 xmlns:vm="using:Demo.ViewModels"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="Demo.Views.TimerBarDemoView"
+			 x:DataType="vm:TimerBarDemoViewModel">
+	<Design.DataContext>
+		<vm:TimerBarDemoViewModel />
+	</Design.DataContext>
+	<StackPanel Spacing="10">
+		<controls:TimeBar Name="TimeBar1" Height="200"
+						  Duration="0:0:1.5" />
+		<Button Content="Pause / Play" Command="{Binding #TimeBar1.TogglePlayState}" />
+		<TextBlock Text="{Binding #TimeBar1.RemainingIterations, StringFormat='Remaining Iterations: {0}'}" />
+		<TextBlock Text="{Binding #TimeBar1.CurrentPlayState, StringFormat='PlayState: {0}'}" />
+	</StackPanel>
+</UserControl>

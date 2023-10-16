@@ -1,0 +1,105 @@
+<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:controls="clr-namespace:Frei.Avalonia.Controls">
+  <Design.PreviewWith>
+	  <controls:MessageStack Width="400" Height="400"
+							 HorizontalStackAlignment="Right" VerticalStackAlignment="Bottom"
+							 HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
+							 OverlayBackground="Pink" 
+							 IsHistoryOpen="False">
+		  <TextBlock Text="Some Content." />
+	  </controls:MessageStack>
+  </Design.PreviewWith>
+
+  <Style Selector="controls|MessageStack">
+    <!-- Set Defaults -->
+	<Setter Property="HorizontalAlignment" Value="Stretch" />
+	<Setter Property="VerticalAlignment" Value="Stretch" />
+    <Setter Property="Template">
+      <ControlTemplate>
+		  <Grid Name="PART_MessageStackRoot" Focusable="False">
+			  <ContentPresenter Name="ContentPresenter"
+								Content="{TemplateBinding Content}"
+								HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+								VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
+			  <Rectangle Name="PART_ContentCover"
+						 Fill="{TemplateBinding OverlayBackground}"
+						 Focusable="False">
+				  <Rectangle.Styles>
+					  <Style Selector="Rectangle#PART_ContentCover[Opacity=0]">
+						  <Setter Property="IsVisible" Value="False" />
+					  </Style>
+					  <Style Selector="Rectangle#PART_ContentCover:not(.notransitions)">
+						  <Setter Property="Transitions">
+							  <Transitions>
+								  <DoubleTransition Property="Opacity" Easing="LinearEasing" Duration="0.3" />
+							  </Transitions>
+						  </Setter>
+					  </Style>
+				  </Rectangle.Styles>
+			  </Rectangle>
+			  <StackPanel Name="PART_Stack"
+						  HorizontalAlignment="{TemplateBinding HorizontalStackAlignment}"
+						  VerticalAlignment="{TemplateBinding VerticalStackAlignment}"
+						  Spacing="{TemplateBinding StackSpacing}" />
+		  </Grid>
+      </ControlTemplate>
+    </Setter>
+	<Setter Property="MessageWrapperTemplate">
+		<ControlTemplate>
+			<Border Name="PART_ContentBackground"
+			  BorderBrush="Pink"
+			  BorderThickness="1"
+			  CornerRadius="5"
+			  BoxShadow="1.5 1.5 8 #4c000000">
+				<ContentPresenter Name="PART_ContentPresenter"
+								  Background="{TemplateBinding Background}"
+								  ContentTemplate="{TemplateBinding ContentTemplate}"
+								  Content="{TemplateBinding Content}"
+								  Padding="{TemplateBinding Padding}" />
+			</Border>
+		</ControlTemplate>
+	</Setter>
+	<Setter Property="MessageLayoutTemplate">
+		<ControlTemplate>
+			<DockPanel Name="PART_DockPanel">
+				<DockPanel.Styles>
+					<Style Selector="DockPanel#PART_DockPanel:not(:pointerover) ProgressBar#PART_ProgressBar">
+						<Style.Animations>
+							<!--{Binding $parent[controls:MessageStack].DefaultDisplayTime}-->
+							<Animation Duration="0:0:5" FillMode="Both">
+								<KeyFrame Cue="0%">
+									<Setter Property="Value" Value="100.0"/>
+								</KeyFrame>
+								<KeyFrame Cue="100%">
+									<Setter Property="Value" Value="0.0"/>
+								</KeyFrame>
+							</Animation>
+						</Style.Animations>
+					</Style>
+				</DockPanel.Styles>
+				<ContentPresenter Name="PART_MessagePresenter"
+								  Background="{TemplateBinding Background}"
+								  ContentTemplate="{TemplateBinding ContentTemplate}"
+								  Content="{TemplateBinding Content}"
+								  Padding="{TemplateBinding Padding}" />
+				<ProgressBar Name="PART_ProgressBar"
+							 DockPanel.Dock="{Binding $parent[controls:MessageStack].ProgressBarPosition}"
+							 IsVisible="{Binding $parent[controls:MessageStack].ShowProgressBar}"
+							 Orientation="{Binding $parent[controls:MessageStack].ProgressBarOrientation}"
+							 Classes="no-transitions"
+							 Background="Black" />
+			</DockPanel>
+
+		</ControlTemplate>
+	</Setter>
+	<Style Selector="^[IsHistoryOpen=True] /template/ Rectangle#PART_ContentCover">
+		<Setter Property="IsHitTestVisible" Value="True" />
+		<Setter Property="Opacity" Value="{Binding $parent[controls:MessageStack].OverlayBackgroundOpacity}" />
+	</Style>
+	<Style Selector="^[IsHistoryOpen=False] /template/ Rectangle#PART_ContentCover">
+		<Setter Property="IsHitTestVisible" Value="False" />
+		<Setter Property="Opacity" Value="0" />
+	</Style>
+  </Style>
+</Styles>
