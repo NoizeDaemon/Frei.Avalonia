@@ -8,6 +8,7 @@
 
   <ItemGroup>
     <PackageReference Include="Avalonia" Version="11.2.7" />
+    <PackageReference Include="Avalonia.Xaml.Behaviors" Version="11.2.7.3" />
   </ItemGroup>
 
 </Project>
